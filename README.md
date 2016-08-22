@@ -7,3 +7,7 @@ information on the algorithms.
 Install the only dependency: `libsdl2-dev` (`sudo apt-get install libsdl2-dev`).
 
 Makefiles exist for each algorithm, so run `make <target>` to create an executable.
+
+### Implemented Algorithms So Far:
+
+*  Selection Sort

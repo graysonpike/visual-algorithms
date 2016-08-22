@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <SDL2/SDL.h>
+#include <stdbool.h>
+#include "random.h"
+
+#define LEN 128
+#define RANGE 128
+
+// The height of a graph bar is DRAW_HEIGHT_MULT * height
+// height is defined as 0 to RANGE
+#define DRAW_HEIGHT_MULT 3
+// Width of each graph bar
+#define DRAW_WIDTH 3
+// Space between each graph bar
+#define DRAW_SPACE 2
+// Delay time in ms between operations
+#define DELAY 50
+
+int width = DRAW_SPACE * (LEN + 1) + DRAW_WIDTH * LEN;
+int height = DRAW_HEIGHT_MULT * RANGE + DRAW_SPACE * 2;
+
+int array[LEN];
+
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
+
+// Initialize SDL (return true if successful, false otherwise)
+bool init_sdl() {
+
+	// Initialize SDL_video
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("Error: Failed to init SDL2: %s\n", SDL_GetError());
+		return false;
+	}
+	window = SDL_CreateWindow(
+		"SDL2 Keypress Test",         // window title
+		SDL_WINDOWPOS_UNDEFINED,      // initial x position
+		SDL_WINDOWPOS_UNDEFINED,      // initial y position
+		width,                        // width, in pixels
+		height,                       // height, in pixels
+		SDL_WINDOW_OPENGL             // flags - see below
+	);
+	if (window == NULL) {
+		printf("Could not create window: %s\n", SDL_GetError());
+		return false;
+	}
+
+	// Initialize Renderer
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if(renderer == NULL) {
+		printf("Could not init renderer: %s\n", SDL_GetError());
+		return false;
+	}
+
+	return true;
+}
+
+void draw_graph() {
+
+	// Clear the screen with a white background
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer);
+
+	// Draw each bar
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+	for(int i = 0; i < LEN; i++) {
+		SDL_Rect bar = {
+			DRAW_SPACE + i * (DRAW_SPACE + DRAW_WIDTH),
+			height - DRAW_SPACE - DRAW_HEIGHT_MULT * array[i],
+			DRAW_WIDTH,
+			DRAW_HEIGHT_MULT * array[i]
+		};
+		SDL_RenderFillRect(renderer, &bar);
+	}
+
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(DELAY);
+}
+
+void quit_sdl() {
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+}
+
+void check_input() {
+	SDL_Event event;
+	while(SDL_PollEvent(&event) != 0) {
+		if(event.type == SDL_QUIT) {
+			quit_sdl();
+			exit(0);
+		}
+	}
+}
+
+void visual_selection_sort() {
+	for(int i = 0; i < LEN; i++) {
+		// Determine smallest unsorted value
+		int min = i;
+		for(int j = i + 1; j < LEN; j++) {
+			if(array[j] < array[min]) {
+				min = j;
+			}
+		}
+		// Swap with position i
+		int temp = array[min];
+		array[min] = array[i];
+		array[i] = temp;
+		check_input();
+		draw_graph();
+	}
+}
+
+int main() {
+
+	init_sdl();
+
+	// Visulaizer operates with line heights in multiples of RANGE
+	populate_array(array, LEN, 1, RANGE);
+
+	// Show unsorted array for 2 seconds
+	draw_graph();
+	SDL_Delay(2000);
+
+	visual_selection_sort(array, LEN);
+
+	while(true) {
+		check_input();
+	}
+
+	return 0;
+
+}
