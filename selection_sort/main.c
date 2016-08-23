@@ -75,7 +75,6 @@ void draw_graph() {
 
 	SDL_RenderPresent(renderer);
 
-	SDL_Delay(DELAY);
 }
 
 void quit_sdl() {
@@ -108,6 +107,7 @@ void visual_selection_sort() {
 		array[i] = temp;
 		check_input();
 		draw_graph();
+		SDL_Delay(DELAY);
 	}
 }
 
