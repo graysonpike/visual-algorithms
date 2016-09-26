@@ -11,3 +11,5 @@ Makefiles exist for each algorithm, so run `make <target>` to create an executab
 ### Implemented Algorithms So Far:
 
 *  Selection Sort
+*  Insertion Sort
+*  Shell Sort
