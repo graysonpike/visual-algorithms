@@ -33,7 +33,7 @@ bool init_sdl() {
 		return false;
 	}
 	window = SDL_CreateWindow(
-		"SDL2 Keypress Test",         // window title
+		"Insertion Sort",         // window title
 		SDL_WINDOWPOS_UNDEFINED,      // initial x position
 		SDL_WINDOWPOS_UNDEFINED,      // initial y position
 		width,                        // width, in pixels
