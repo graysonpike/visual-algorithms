@@ -1,5 +1,5 @@
 # visual-algorithms
-Implementations of various algorithms in C and visualization with SDL 2. 
+Implementations of various sorting algorithms in C and visualization with SDL 2. 
 See my [c-algorithms repo](https://github.com/Grayson112233/c-algorithms) for more
 information on the algorithms.
 
