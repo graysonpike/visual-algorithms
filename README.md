@@ -13,3 +13,6 @@ Makefiles exist for each algorithm, so run `make <target>` to create an executab
 *  Selection Sort
 *  Insertion Sort
 *  Shell Sort
+
+![Screenshot 1](screenshots/screen1.png)
+![Screenshot 1](screenshots/screen2.png)
